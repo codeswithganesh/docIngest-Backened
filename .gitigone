@@ -1,0 +1,4 @@
+# Sensitive and environment files
+env
+credentials.json
+email.js
