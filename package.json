@@ -27,5 +27,15 @@
     "openai": "^5.1.1",
     "server-destroy": "^1.0.1",
     "uuid": "^11.1.0"
-  }
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
