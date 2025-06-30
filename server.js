@@ -4,6 +4,8 @@ const cors= require('cors');
 const fileUpload = require('express-fileupload');
 const authRoutes = require('./routes/authRoutes');
 const documentRoutes = require('./routes/documentRoutes');
+const dbAgent=require("./workers/dbWorker")
+const emailRoutes=require('./email');
 
 
 const app = express();
@@ -19,6 +21,8 @@ app.use(cors({
 
 app.use('/api/auth', authRoutes);
 app.use('/api/documents', documentRoutes);
+app.use('/api/email', emailRoutes);
+app.use('/api/bot',dbAgent);
 
 require('./workers/ocrworker');
 require('./workers/classifyWorker');

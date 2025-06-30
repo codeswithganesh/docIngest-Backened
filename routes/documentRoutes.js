@@ -50,6 +50,42 @@ router.post('/upload', async (req, res) => {
         console.error(err);
     }
 });
+router.post('/emailupload', async (req, res) => {
+    const {userId} = req.body;
+    const file=req.files?.document;
+    if(!file || !userId) return res.status(400).json({message: 'File and userId are required'});
+    const documentId = uuidv4();
+    try{
+        await poolConnect;
+        const blobname=documentId+ '%' + file.name;
+        const blockBlobClient = containerClient.getBlockBlobClient(blobname);
+        await blockBlobClient.uploadData(file.data);
+        const blobUrl = blockBlobClient.url;
+
+        const request=pool.request();
+        request.input('DocumentId',sql.UniqueIdentifier, documentId);
+        request.input('UserId', sql.UniqueIdentifier, userId);
+        request.input('FileName', sql.NVarChar, file.name);
+        request.input('BlobUrl', sql.NVarChar, blobUrl);
+        request.input('Source',sql.NVarChar, 'Email');
+        request.input('Status',sql.NVarChar, 'Ingested');
+        request.input('IngestedAt',sql.DateTime, new Date());
+        request.input('UploadDate', sql.DateTime, new Date());
+
+        await request.query('INSERT INTO Documents (DocumentID,UserId, FileName, BlobUrl, Source, Status,IngestedAt, UploadDate) VALUES (@DocumentId, @UserId, @FileName, @BlobUrl, @Source, @Status, @IngestedAt, @UploadDate)');
+
+        await ocrQueueClient.createIfNotExists();
+        const message = Buffer.from(JSON.stringify({ documentId, blobUrl })).toString('base64');
+        await ocrQueueClient.sendMessage(message);
+
+        res.status(201).json({message: 'File uploaded successfully',blobUrl, documentId});
+    }
+    catch(err)
+    {
+        res.status(500).json({message: 'File upload failed', error: err.message});
+        console.error(err);
+    }
+});
 router.put('/:id/extracted', async (req, res) => {
     const documentId = req.params.id;
     const { ocrTimeSeconds,extractedText } = req.body;
