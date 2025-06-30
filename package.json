@@ -1,0 +1,31 @@
+{
+  "dependencies": {
+    "@azure/ai-form-recognizer": "^5.1.0",
+    "@azure/communication-email": "^1.0.0",
+    "@azure/core-auth": "^1.9.0",
+    "@azure/identity": "^4.10.0",
+    "@azure/openai": "^2.0.0",
+    "@azure/service-bus": "^7.9.5",
+    "@azure/storage-blob": "^12.27.0",
+    "@azure/storage-queue": "^12.26.0",
+    "@google-cloud/local-auth": "^3.0.1",
+    "axios": "^1.9.0",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-fileupload": "^1.5.1",
+    "google-auth-library": "^10.1.0",
+    "googleapis": "^150.0.1",
+    "imap-simple": "^1.6.3",
+    "jsonwebtoken": "^9.0.2",
+    "mailparser": "^3.7.3",
+    "mssql": "^11.0.1",
+    "node-fetch": "^3.3.2",
+    "nodemailer": "^7.0.3",
+    "open": "^10.1.2",
+    "openai": "^5.1.1",
+    "server-destroy": "^1.0.1",
+    "uuid": "^11.1.0"
+  }
+}
